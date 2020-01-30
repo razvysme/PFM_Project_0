@@ -10,6 +10,9 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <math.h> 
+
+#define M_PI 3.14159265358979323846  // Pi Value
 
 //==============================================================================
 Pmf_project_0AudioProcessor::Pmf_project_0AudioProcessor()
@@ -155,6 +158,23 @@ void Pmf_project_0AudioProcessor::processBlock (AudioBuffer<float>& buffer, Midi
         auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
+    }
+    Random r;
+    for (int i = 0; i < buffer.getNumSamples(); i++)
+    {
+        for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+        {
+            if (shouldPlaySound) 
+            {
+                //buffer.setSample(channel, i, r.nextFloat());
+                //buffer.setSample(channel, i, buffer.getSample(channel, i));
+                buffer.setSample(channel, i, cos(2 * M_PI * 1000 * i));    //x(n)=a*cos(2*Pi*freq*n + phase)
+            }
+            else
+            {
+                buffer.setSample(channel, i, 0);
+            }   
+        }
     }
 }
 
